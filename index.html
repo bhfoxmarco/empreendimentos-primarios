@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Empreendimentos Primários · QuintoAndar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f7f6f3;--surface:#fff;--surface2:#f1f0ec;
+  --border:rgba(0,0,0,0.1);--border-strong:rgba(0,0,0,0.18);
+  --text:#1a1a18;--text-muted:#6b6b67;--text-faint:#9e9e99;
+  --green-bg:#e8f5e0;--green-text:#2d6a1a;
+  --amber-bg:#fef3dc;--amber-text:#7a4e0a;
+  --gray-bg:#eeede9;--gray-text:#5a5a56;
+  --radius-sm:6px;--radius-md:10px;--radius-lg:14px;
+  --shadow:0 1px 3px rgba(0,0,0,0.06),0 4px 16px rgba(0,0,0,0.05);
+}
+@media(prefers-color-scheme:dark){
+  :root{
+    --bg:#18181a;--surface:#222224;--surface2:#2a2a2c;
+    --border:rgba(255,255,255,0.08);--border-strong:rgba(255,255,255,0.15);
+    --text:#f0efe9;--text-muted:#9e9e99;--text-faint:#6b6b67;
+    --green-bg:#1a3012;--green-text:#7ed96a;
+    --amber-bg:#2e1f06;--amber-text:#f0b94a;
+    --gray-bg:#2a2a2c;--gray-text:#9e9e99;
+    --shadow:0 1px 3px rgba(0,0,0,0.3),0 4px 16px rgba(0,0,0,0.2);
+  }
+}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+.page-header{background:var(--surface);border-bottom:1px solid var(--border);padding:1.1rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.logo-title{font-family:'DM Serif Display',serif;font-size:1.2rem;font-weight:400}
+.logo-badge{font-size:11px;font-weight:500;padding:3px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:20px;color:var(--text-muted);margin-left:10px}
+.header-meta{font-size:12px;color:var(--text-faint)}
+.container{max-width:1200px;margin:0 auto;padding:1.5rem 1.5rem 4rem}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:1.25rem}
+@media(max-width:640px){.stats-grid{grid-template-columns:repeat(2,1fr)}}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:14px 16px;box-shadow:var(--shadow)}
+.stat-num{font-size:1.6rem;font-weight:500;line-height:1}
+.stat-num.green{color:var(--green-text)}.stat-num.amber{color:var(--amber-text)}.stat-num.gray{color:var(--gray-text)}
+.stat-label{font-size:11px;color:var(--text-faint);margin-top:4px;text-transform:uppercase;letter-spacing:.05em}
+.filter-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;margin-bottom:1.25rem;box-shadow:var(--shadow)}
+.filter-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:12px;align-items:end}
+@media(max-width:768px){.filter-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.filter-grid{grid-template-columns:1fr}}
+.filter-group{display:flex;flex-direction:column;gap:5px}
+.filter-label{font-size:10.5px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:var(--text-faint)}
+.search-input,select{font-family:'DM Sans',sans-serif;font-size:13.5px;color:var(--text);background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);height:38px;padding:0 12px;width:100%;outline:none;appearance:none;-webkit-appearance:none}
+.search-input:focus,select:focus{border-color:var(--border-strong);background:var(--surface)}
+.select-wrap{position:relative}
+.select-wrap::after{content:'';position:absolute;right:11px;top:50%;transform:translateY(-50%);border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid var(--text-muted);pointer-events:none}
+.btn-clear{font-family:'DM Sans',sans-serif;font-size:13px;height:38px;padding:0 16px;background:transparent;border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-muted);cursor:pointer;display:flex;align-items:center;gap:6px;width:100%;justify-content:center;transition:background .15s}
+.btn-clear:hover{background:var(--surface2);color:var(--text)}
+.table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow)}
+.table-top{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--border);background:var(--surface2)}
+.result-count{font-size:12.5px;color:var(--text-muted)}
+.table-scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead tr{background:var(--surface2)}
+th{padding:10px 14px;text-align:left;font-size:10.5px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:var(--text-faint);border-bottom:1px solid var(--border);cursor:pointer;user-select:none;white-space:nowrap}
+th:hover{color:var(--text)}
+th.sort-asc::after{content:' ↑';color:var(--text)}
+th.sort-desc::after{content:' ↓';color:var(--text)}
+td{padding:11px 14px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:middle;max-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tbody tr{transition:background .1s}
+tbody tr:hover{background:var(--surface2)}
+.col-cod{width:115px}.col-end{width:auto;min-width:200px}.col-bairro{width:150px}.col-cidade{width:115px}.col-data{width:120px}.col-link{width:95px}
+.cod-text{font-size:11.5px;color:var(--text-muted);font-variant-numeric:tabular-nums}
+.badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:20px;font-size:11.5px;font-weight:500;white-space:nowrap}
+.badge-pronto{background:var(--green-bg);color:var(--green-text)}
+.badge-futuro{background:var(--amber-bg);color:var(--amber-text)}
+.badge-passado{background:var(--gray-bg);color:var(--gray-text)}
+.link-btn{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:var(--radius-sm);border:1px solid var(--border);background:transparent;color:var(--text-muted);font-size:12px;font-family:'DM Sans',sans-serif;text-decoration:none;transition:background .15s,color .15s}
+.link-btn:hover{background:var(--surface2);color:var(--text);border-color:var(--border-strong)}
+.empty-state{text-align:center;padding:3rem 1rem;color:var(--text-faint)}
+.empty-state i{font-size:2rem;display:block;margin-bottom:.5rem}
+.loading{text-align:center;padding:3rem;color:var(--text-faint);font-size:14px}
+.pagination{display:flex;align-items:center;justify-content:center;gap:6px;padding:1.25rem 1rem;flex-wrap:wrap;border-top:1px solid var(--border)}
+.page-btn{font-family:'DM Sans',sans-serif;font-size:13px;height:32px;min-width:32px;padding:0 8px;border:1px solid var(--border);border-radius:var(--radius-sm);background:transparent;color:var(--text-muted);cursor:pointer;transition:background .1s}
+.page-btn:hover:not(:disabled){background:var(--surface2);color:var(--text)}
+.page-btn:disabled{opacity:.35;cursor:default}
+.page-btn.active{background:var(--text);color:var(--bg);border-color:var(--text);font-weight:500}
+.page-info{font-size:12px;color:var(--text-faint);margin-left:4px}
+.page-footer{text-align:center;padding:2rem;font-size:12px;color:var(--text-faint);border-top:1px solid var(--border);margin-top:2rem}
+.erro{text-align:center;padding:2rem;color:#a32d2d;font-size:14px}
+</style>
+</head>
+<body>
+
+<header class="page-header">
+  <div>
+    <span class="logo-title">Empreendimentos Primários</span>
+    <span class="logo-badge">QuintoAndar</span>
+  </div>
+  <span class="header-meta">Parceiro Corretor · Belo Horizonte e região</span>
+</header>
+
+<div class="container">
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-num" id="s-total">—</div><div class="stat-label">Total filtrado</div></div>
+    <div class="stat-card"><div class="stat-num green" id="s-pronto">—</div><div class="stat-label">Prontos</div></div>
+    <div class="stat-card"><div class="stat-num amber" id="s-futuro">—</div><div class="stat-label">A entregar</div></div>
+    <div class="stat-card"><div class="stat-num gray" id="s-passado">—</div><div class="stat-label">Entregues</div></div>
+  </div>
+
+  <div class="filter-panel">
+    <div class="filter-grid">
+      <div class="filter-group">
+        <label class="filter-label" for="f-search">Buscar endereço ou código</label>
+        <input class="search-input" type="text" id="f-search" placeholder="Ex: Rua das Flores ou 894516801…">
+      </div>
+      <div class="filter-group">
+        <label class="filter-label" for="f-bairro">Bairro</label>
+        <div class="select-wrap"><select id="f-bairro"><option value="">Todos os bairros</option></select></div>
+      </div>
+      <div class="filter-group">
+        <label class="filter-label" for="f-cidade">Cidade</label>
+        <div class="select-wrap"><select id="f-cidade"><option value="">Todas as cidades</option></select></div>
+      </div>
+      <div class="filter-group">
+        <label class="filter-label" for="f-status">Status</label>
+        <div class="select-wrap">
+          <select id="f-status">
+            <option value="">Todos</option>
+            <option value="pronto">Pronto</option>
+            <option value="futuro">A entregar</option>
+            <option value="passado">Entregue</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:12px;display:flex;justify-content:flex-end">
+      <button class="btn-clear" id="btn-clear" style="width:auto">
+        <i class="ti ti-x" style="font-size:14px"></i> Limpar filtros
+      </button>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <div class="table-top">
+      <span class="result-count" id="result-count"></span>
+    </div>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th class="col-cod" data-sort="cod">Código</th>
+            <th class="col-end" data-sort="end">Endereço</th>
+            <th class="col-bairro" data-sort="bairro">Bairro</th>
+            <th class="col-cidade" data-sort="cidade">Cidade</th>
+            <th class="col-data" data-sort="data">Conclusão</th>
+            <th class="col-link">Link</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"><tr><td colspan="6"><div class="loading">Carregando imóveis...</div></td></tr></tbody>
+      </table>
+    </div>
+    <div class="pagination" id="pagination"></div>
+  </div>
+</div>
+
+<footer class="page-footer">Buscador de Empreendimentos Primários · Parceiro QuintoAndar</footer>
+
+<script>
+const today = new Date();
+const PER = 25;
+let allData = [], sortCol = 'bairro', sortDir = 1, page = 1;
+
+function tc(s){ return s ? s.charAt(0) + s.slice(1).toLowerCase() : ''; }
+
+function getStatus(val){
+  const v = (val||'').trim().toUpperCase();
+  if(v==='PRONTO') return 'pronto';
+  const p = v.split('/');
+  if(p.length < 2) return 'passado';
+  let d = p.length===3 ? new Date(+p[2],+p[1]-1,+p[0]) : new Date(+p[1],+p[0]-1,1);
+  return isNaN(d) ? 'passado' : d > today ? 'futuro' : 'passado';
+}
+
+function badge(val){
+  const s = getStatus(val), v = (val||'').trim();
+  if(s==='pronto') return `<span class="badge badge-pronto">Pronto</span>`;
+  if(s==='futuro') return `<span class="badge badge-futuro">${v}</span>`;
+  return `<span class="badge badge-passado">${v}</span>`;
+}
+
+function filtered(){
+  const b=document.getElementById('f-bairro').value;
+  const c=document.getElementById('f-cidade').value;
+  const s=document.getElementById('f-status').value;
+  const q=document.getElementById('f-search').value.trim().toLowerCase();
+  return allData.filter(r=>{
+    if(b && r.bairro!==b) return false;
+    if(c && r.cidade!==c) return false;
+    if(s && r.status!==s) return false;
+    if(q && !r.end.toLowerCase().includes(q) && !r.cod.includes(q)) return false;
+    return true;
+  });
+}
+
+function sorted(arr){
+  return [...arr].sort((a,b)=>(a[sortCol]||'').localeCompare(b[sortCol]||'',undefined,{numeric:true})*sortDir);
+}
+
+function render(){
+  const f = sorted(filtered());
+  const total = f.length, pages = Math.max(1,Math.ceil(total/PER));
+  if(page>pages) page=1;
+  const slice = f.slice((page-1)*PER, page*PER);
+
+  document.getElementById('s-total').textContent   = f.length;
+  document.getElementById('s-pronto').textContent  = f.filter(r=>r.status==='pronto').length;
+  document.getElementById('s-futuro').textContent  = f.filter(r=>r.status==='futuro').length;
+  document.getElementById('s-passado').textContent = f.filter(r=>r.status==='passado').length;
+  document.getElementById('result-count').textContent = `${total} imóvel${total!==1?'eis':''} encontrado${total!==1?'s':''}`;
+
+  const tb = document.getElementById('tbody');
+  if(!slice.length){
+    tb.innerHTML=`<tr><td colspan="6"><div class="empty-state"><i class="ti ti-search-off"></i><p>Nenhum imóvel encontrado.</p></div></td></tr>`;
+    document.getElementById('pagination').innerHTML='';
+    return;
+  }
+  tb.innerHTML = slice.map(r=>`<tr>
+    <td class="col-cod"><span class="cod-text">${r.cod}</span></td>
+    <td class="col-end" title="${r.end}">${r.end}</td>
+    <td class="col-bairro">${tc(r.bairro)}</td>
+    <td class="col-cidade">${tc(r.cidade)}</td>
+    <td class="col-data">${badge(r.data)}</td>
+    <td class="col-link"><a class="link-btn" href="https://corretor.quintoandar.com.br/informacoes-de-entrada/${r.cod}" target="_blank" rel="noopener"><i class="ti ti-external-link"></i> Abrir</a></td>
+  </tr>`).join('');
+
+  const pg = document.getElementById('pagination');
+  if(pages<=1){pg.innerHTML='';return;}
+  const range=[];
+  for(let i=1;i<=pages;i++){
+    if(i===1||i===pages||Math.abs(i-page)<=1) range.push(i);
+    else if(range[range.length-1]!=='…') range.push('…');
+  }
+  let html=`<button class="page-btn" onclick="goPage(${page-1})" ${page===1?'disabled':''}>‹</button>`;
+  range.forEach(r=>{ html += r==='…' ? `<span style="color:var(--text-faint);font-size:13px">…</span>` : `<button class="page-btn${r===page?' active':''}" onclick="goPage(${r})">${r}</button>`; });
+  html+=`<button class="page-btn" onclick="goPage(${page+1})" ${page===pages?'disabled':''}>›</button>`;
+  html+=`<span class="page-info">pág. ${page} de ${pages}</span>`;
+  pg.innerHTML=html;
+}
+
+window.goPage=function(p){page=p;render();window.scrollTo({top:0,behavior:'smooth'});};
+
+function initSelects(){
+  const bairros=[...new Set(allData.map(r=>r.bairro))].sort();
+  const cidades=[...new Set(allData.map(r=>r.cidade))].sort();
+  const selB=document.getElementById('f-bairro'), selC=document.getElementById('f-cidade');
+  bairros.forEach(b=>{const o=document.createElement('option');o.value=b;o.textContent=tc(b);selB.appendChild(o);});
+  cidades.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=tc(c);selC.appendChild(o);});
+}
+
+document.querySelectorAll('th[data-sort]').forEach(th=>{
+  th.addEventListener('click',()=>{
+    const col=th.dataset.sort;
+    if(sortCol===col) sortDir*=-1; else{sortCol=col;sortDir=1;}
+    document.querySelectorAll('th[data-sort]').forEach(t=>t.classList.remove('sort-asc','sort-desc'));
+    th.classList.add(sortDir===1?'sort-asc':'sort-desc');
+    page=1; render();
+  });
+});
+
+['f-bairro','f-cidade','f-status'].forEach(id=>document.getElementById(id).addEventListener('change',()=>{page=1;render();}));
+document.getElementById('f-search').addEventListener('input',()=>{page=1;render();});
+document.getElementById('btn-clear').addEventListener('click',()=>{
+  ['f-bairro','f-cidade','f-status'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('f-search').value='';
+  page=1; render();
+});
+
+fetch('data.json?t='+Date.now())
+  .then(r=>{ if(!r.ok) throw new Error('Arquivo não encontrado'); return r.json(); })
+  .then(data=>{
+    allData = data.filter(r=>r.cod).map(r=>({...r, status:getStatus(r.data)}));
+    initSelects();
+    render();
+  })
+  .catch(()=>{
+    document.getElementById('tbody').innerHTML=`<tr><td colspan="6"><div class="erro">⚠️ Não foi possível carregar os dados. Execute o workflow no GitHub Actions para gerar o data.json.</div></td></tr>`;
+  });
+</script>
+</body>
+</html>
